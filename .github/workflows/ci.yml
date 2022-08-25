@@ -13,11 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    -
-      name: Build and push Docker images to Github Container Registry
-      uses: fatjyc/push-gcr-action@v2.0
-      with:
-            user: ${{ github.repository_owner }}
-            token: ${{ secrets.GITHUBTOKEN }}
-            
-
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
