@@ -13,20 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
     -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUBTOKEN }}
-    -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/crisnil/app:latest
-            ghcr.io/crisnil/app:1.0.0
+      name: Build and push Docker images to Github Container Registry
+      uses: fatjyc/push-gcr-action@v2.0
+      with:
+            user: ${{ user }}
+            token: ${{ secrets.GITHUBTOKEN }}
+            tagUseBranchNameWhenPush: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+
